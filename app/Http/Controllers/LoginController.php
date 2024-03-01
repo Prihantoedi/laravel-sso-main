@@ -94,9 +94,10 @@ class LoginController extends Controller
                 //     'message' => 'username or password invalid'
                 // ], 400);
                 $request->flash();
-                return redirect()->back()->withError([ 'error' => 'Invalid email or password!']);
+                return redirect()->back()->with([ 'error' => 'Invalid email or password!']);
             }
         } catch(\Exception $e){
+            $request->flash();
             // return response()->json(['message' => 'user not found!', 'status' => 404], 404);
             return redirect()->back()->with(['error' => 'User not found!']);
         }
