@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
             $table->string('token_access');
-            $table->integer('expires_at');
+            $table->unsignedBigInteger('expires_at');
             $table->string('token_refresh');
             $table->timestamps();
         });

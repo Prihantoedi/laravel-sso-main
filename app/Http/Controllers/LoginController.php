@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Module\Secret;
+use App\Models\Session;
 use Faker\Factory;
 
 
@@ -77,6 +78,7 @@ class LoginController extends Controller
         $email = $request['email'];
         $password = $request['password'];
 
+        DB::beginTransaction();
         try{
             $user = DB::table('users')->where('email', $email)->first();
             
@@ -100,17 +102,36 @@ class LoginController extends Controller
 
                 $token_csrf = str_replace('-', '', $token_csrf);
 
-                $token_data = [
-                    'token_access' => $token_access,
-                    'token_refresh' => $token_refresh,
-                    'token_csrf' => $token_csrf
-                ];
-
+            
                 
-                $request->session()->put('token_data', $token_data);
+
+
                 
                 $expires_at = ($timestamp * 1000) + 86400000; // expires after 24 hours
 
+                $token_data = [
+                    'token_access' => $token_access,
+                    'token_refresh' => $token_refresh,
+                    'token_csrf' => $token_csrf,          
+                    'expires' => $expires_at,          
+                ];
+
+                                // save to session
+                $request->session()->put('token_data', $token_data);
+
+
+                // save to db
+                $new_session = new Session();
+                $new_session->id_user = $user->id;
+                $new_session->token_access = $token_access;
+                $new_session->expires_at = $expires_at;
+                $new_session->token_refresh = $token_refresh;
+                $new_session->token_csrf = $token_csrf;
+                $new_session->created_at = new \Datetime;
+
+                $new_session->save();
+
+                DB::commit();
                 // if convert to date:
                 // $expires_date = date('d-M-Y H:i:s', $expires_at / 1000);
                             
@@ -133,7 +154,11 @@ class LoginController extends Controller
                 return redirect()->back()->with([ 'error' => 'Invalid email or password!']);
             }
         } catch(\Exception $e){
-            $request->flash();
+            dd($e);
+            $request->flash(); // get the older input data from request
+
+            DB::rollback();
+
             // return response()->json(['message' => 'user not found!', 'status' => 404], 404);
             return redirect()->back()->with(['error' => 'User not found!']);
         }
@@ -143,6 +168,10 @@ class LoginController extends Controller
 
     public function logout(Request $request){
         // delete token_data
+
+        $token_data = $request->session()->get('token_data');
+        $delete_session = DB::table('sessions')->where('token_refresh', $token_data['token_refresh'])->delete();
+
         $request->session()->forget('token_data');
 
         return redirect()->route('welcome.page');
