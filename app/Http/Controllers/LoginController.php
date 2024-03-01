@@ -92,6 +92,8 @@ class LoginController extends Controller
                     if(is_null($get_duplicated_access)){
                         break;
                     }
+                    $faker_access = Factory::create();
+                    $token_access = $faker_access->uuid;
                 }
 
                 $faker_refresh = Factory::create();
@@ -100,12 +102,17 @@ class LoginController extends Controller
                 $faker_csrf = Factory::create();
                 $token_csrf = $faker_refresh->uuid;
 
+                while(true){
+                    $get_duplicated_csrf = DB::table('sessions')->where('token_csrf', $token_csrf)->first();
+                    if(is_null($get_duplicated_csrf)){
+                        break;
+                    }
+
+                    $faker_csrf = Factory::create();
+                    $token_csrf = $faker_csrf->uuid;
+                }
+
                 $token_csrf = str_replace('-', '', $token_csrf);
-
-            
-                
-
-
                 
                 $expires_at = ($timestamp * 1000) + 86400000; // expires after 24 hours
 
@@ -154,7 +161,7 @@ class LoginController extends Controller
                 return redirect()->back()->with([ 'error' => 'Invalid email or password!']);
             }
         } catch(\Exception $e){
-            dd($e);
+
             $request->flash(); // get the older input data from request
 
             DB::rollback();
