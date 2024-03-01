@@ -10,7 +10,7 @@ class Session extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_user', 'token_access', 'token_refresh'
+        'id_user', 'token_access', 'token_refresh', 'token_csrf'
     ];
 
     protected $hidden = [
