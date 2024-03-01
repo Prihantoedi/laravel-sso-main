@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Module\Secret;
 use Faker\Factory;
 
 
@@ -23,10 +24,39 @@ class LoginController extends Controller
         return view('authen.login', compact('old_input'));
     }
 
-    public function authentication($client){
-        
-        dd($client);
-        return view('authen.authenticate');
+    public function authentication(Request $request, $client){
+        try{
+            
+            $token = $request->session()->get('token_data');
+
+            $token_access = $token['token_access'];
+            
+            // $token_matcher = DB::table('sessions')->select('token_access', 'token_refresh', 'token_csrf')->where('token_access', $token_access)->first();
+            $token_matcher = $token;
+
+            if($token_matcher){
+                $secret = new Secret();
+                $ta_encryption = $secret->token_encryption($token['token_access'], 'first_client_app');
+                $tr_encryption = $secret->token_encryption($token['token_refresh'], 'first_client_app');
+                $tc_encryption = $secret->token_encryption($token['token_csrf'], 'first_client_app');
+
+                $auth_data = [
+                    'access' => $ta_encryption,
+                    'refresh' => $tr_encryption,
+                    'csrf' => $tc_encryption
+                ];
+
+                return view('authen.authenticate', compact('auth_data'));
+
+            } else{
+                return redirect()->route('login');
+            }
+
+        } catch(\Exception $e){
+            // dd($e);
+            return redirect()->route('welcome.page');
+        }
+
     }
 
     public function loginAttempt(Request $request){
