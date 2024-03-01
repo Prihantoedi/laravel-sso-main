@@ -15,7 +15,13 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', function (Request $request) {
-    return view('welcome');
+    $is_auth = false;
+
+    if($request->session()->get('token_data')){
+        $is_auth = true; 
+    }
+    
+    return view('welcome', compact('is_auth'));
 });
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');

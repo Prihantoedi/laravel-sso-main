@@ -2,12 +2,15 @@
 @section('content')
 <div class="container pt-5">
     <div class="text-center"><h1>SSO First (Main) App with Laravel</h1></div>
-    <div class="not-auth-info text-center mt-5">
-        <div>You're still not loggin</div>
-        <div class="mt-3">
-            <a href="{{route('login')}}" class="btn btn-danger">Login Here</a>
+
+    @if(!$is_auth)
+        <div class="not-auth-info text-center mt-5">
+            <div>You're still not loggin</div>
+            <div class="mt-3">
+                <a href="{{route('login')}}" class="btn btn-danger">Login Here</a>
+            </div>
         </div>
-    </div>
+    @endif
 
     <div class="client-app-grp mt-4 d-flex justify-content-center gap-3 p-5" style="border: 1px #e7e7e7 solid;">
         <form action="" method="GET">
