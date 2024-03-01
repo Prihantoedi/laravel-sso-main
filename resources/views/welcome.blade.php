@@ -1,6 +1,9 @@
 @extends('layout.app')
 @section('content')
 <div class="container pt-5">
+    <div class="text-end">
+        <a href="{{route('logout')}}">Logout</a>
+    </div>
     <div class="text-center"><h1>SSO First (Main) App with Laravel</h1></div>
 
     @if(!$is_auth)

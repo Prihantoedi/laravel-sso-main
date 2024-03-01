@@ -22,7 +22,8 @@ Route::get('/', function (Request $request) {
     }
     
     return view('welcome', compact('is_auth'));
-});
+})->name('welcome.page');
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'loginAttempt'])->name('login.attempt');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');

@@ -97,5 +97,12 @@ class LoginController extends Controller
 
     }
 
+    public function logout(Request $request){
+        // delete token_data
+        $request->session()->forget('token_data');
+
+        return redirect()->route('welcome.page');
+    }
+
 
 }
