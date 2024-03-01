@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 /*
@@ -14,15 +15,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function (Request $request) {
-    $is_auth = false;
-
-    if($request->session()->get('token_data')){
-        $is_auth = true; 
-    }
-    
-    return view('welcome', compact('is_auth'));
-})->name('welcome.page');
+Route::get('/', [UserController::class, 'index'])->name('welcome.page');
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'loginAttempt'])->name('login.attempt');
