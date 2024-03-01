@@ -17,7 +17,10 @@ class LoginController extends Controller
         if($request->session()->get('token_data')){
             return redirect()->back();
         }
-        return view('authen.login');
+
+        $old_input = session()->getOldInput();
+
+        return view('authen.login', compact('old_input'));
     }
 
     public function loginAttempt(Request $request){
@@ -75,23 +78,27 @@ class LoginController extends Controller
                 // if convert to date:
                 // $expires_date = date('d-M-Y H:i:s', $expires_at / 1000);
                             
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'login success',
-                    'token_access' => $token_access,
-                    'token_refresh' => $token_refresh,
-                    'token_csrf' => $token_csrf,
-                    'expires_at' => $expires_at,
-                    'type' => 'Bearer' 
-                ], 200);
+                // return response()->json([
+                //     'status' => 200,
+                //     'message' => 'login success',
+                //     'token_access' => $token_access,
+                //     'token_refresh' => $token_refresh,
+                //     'token_csrf' => $token_csrf,
+                //     'expires_at' => $expires_at,
+                //     'type' => 'Bearer' 
+                // ], 200);???
+                return redirect()->route('welcome.page');
             } else{
-                return response()->json([
-                    'status' => 400,
-                    'message' => 'username or password invalid'
-                ], 400);
+                // return response()->json([
+                //     'status' => 400,
+                //     'message' => 'username or password invalid'
+                // ], 400);
+                $request->flash();
+                return redirect()->back()->withError([ 'error' => 'Invalid email or password!']);
             }
         } catch(\Exception $e){
-            return response()->json(['message' => 'user not found!', 'status' => 404], 404);
+            // return response()->json(['message' => 'user not found!', 'status' => 404], 404);
+            return redirect()->back()->with(['error' => 'User not found!']);
         }
         
 
