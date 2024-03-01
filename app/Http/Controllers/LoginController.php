@@ -23,6 +23,12 @@ class LoginController extends Controller
         return view('authen.login', compact('old_input'));
     }
 
+    public function authentication($client){
+        
+        dd($client);
+        return view('authen.authenticate');
+    }
+
     public function loginAttempt(Request $request){
 
         date_default_timezone_set('Asia/Jakarta');
