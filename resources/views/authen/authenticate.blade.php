@@ -11,7 +11,13 @@
                    
                 // redirect to client app with url and access token and client
 
-                window.location.href = `http://127.0.0.1:8000?acc=${token['access']}&ref=${token['refresh']}&csrf=${token['csrf']}`;
+                let authBtn = document.getElementById('auth-btn');
+
+                authBtn.addEventListener('click', function(){
+                    
+                });
+
+                window.location.href = `http://127.0.0.1:8080?acc=${token['access']}`;
              
             </script>
             <button class="btn btn-danger" id="cancel-btn">Cancel</button>

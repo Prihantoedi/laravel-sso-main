@@ -16,13 +16,30 @@ class LoginController extends Controller
     //
 
     public function login(Request $request){
+
+        
+        $url = url()->full();
+
+        $url_exploder = explode('?', $url);
+
+        $client = '';
+
+        if(count($url_exploder) > 1){
+            $is_from_client = true;
+            $app_exploder = explode('=', $url_exploder);
+            if($app_exploder == 'first_app_client' || $app_exploder == 'second_app_client'){
+                $client = $app_exploder[1];
+            }
+        }
+
+
         if($request->session()->get('token_data')){
             return redirect()->back();
         }
 
         $old_input = session()->getOldInput();
 
-        return view('authen.login', compact('old_input'));
+        return view('authen.login', compact('old_input', 'client'));
     }
 
     public function authentication(Request $request, $client){
