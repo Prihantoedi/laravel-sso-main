@@ -46,6 +46,7 @@ class AuthorizationController extends Controller
 
         return response()->json([
             'msg' => 'invalid token access!',
+            'authorization' => 'prohibited',
             'status' => '404',
         ], 404);
     }

@@ -8,7 +8,6 @@
             <button class="btn btn-primary" id="auth-btn">Authentication</button>
             <script>
                 const token = {!! json_encode($auth_data)!!};
-                console.log(token);
                 // redirect to client app with url and access token and client
 
                 let authBtn = document.getElementById('auth-btn');

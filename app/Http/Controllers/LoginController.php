@@ -27,7 +27,7 @@ class LoginController extends Controller
         if(count($url_exploder) > 1){
             $is_from_client = true;
             $app_exploder = explode('=', $url_exploder[1]);
-            if($app_exploder[1] == 'first_app_client' || $app_exploder[1] == 'second_app_client'){
+            if($app_exploder[1] == 'first_client_app' || $app_exploder[1] == 'second_client_app'){
                 $client = $app_exploder[1];
             }
         }
@@ -162,24 +162,8 @@ class LoginController extends Controller
                 $new_session->save();
 
                 DB::commit();
-                // if convert to date:
-                // $expires_date = date('d-M-Y H:i:s', $expires_at / 1000);
-                            
-                // return response()->json([
-                //     'status' => 200,
-                //     'message' => 'login success',
-                //     'token_access' => $token_access,
-                //     'token_refresh' => $token_refresh,
-                //     'token_csrf' => $token_csrf,
-                //     'expires_at' => $expires_at,
-                //     'type' => 'Bearer' 
-                // ], 200);???
                 return redirect()->route('welcome.page');
             } else{
-                // return response()->json([
-                //     'status' => 400,
-                //     'message' => 'username or password invalid'
-                // ], 400);
                 $request->flash();
                 return redirect()->back()->with([ 'error' => 'Invalid email or password!']);
             }

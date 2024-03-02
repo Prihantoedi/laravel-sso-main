@@ -13,7 +13,7 @@
         <div class="not-auth-info text-center mt-5">
             <div>You're still not loggin</div>
             <div class="mt-3">
-                <a href="{{route('login')}}" class="btn btn-danger">Login Here</a>
+                <a href="{{route('login')}}" class="btn btn-danger">SSO Login</a>
             </div>
         </div>
     @endif
