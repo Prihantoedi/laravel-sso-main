@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\LoginValidationController;
+use App\Http\Controllers\API\AuthorizationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,3 +20,4 @@ use App\Http\Controllers\API\LoginValidationController;
 // });
 
 Route::post('/v1/login/validation', [LoginValidationController::class, 'loginValidation'])->name('api.login.validation');
+Route::post('/v1/authorize', [AuthorizationController::class, 'authorizePage'])->name('authorize.page');

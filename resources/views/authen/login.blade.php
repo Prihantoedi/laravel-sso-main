@@ -12,7 +12,7 @@
         @endif
         
         <div class="login-form">
-            <form action="{{route('login.attempt')}}" method="POST">
+            <form action= "{{route('login.attempt')}}" method="POST">
                 @csrf
                 <div>
                     <label>Email</label>
