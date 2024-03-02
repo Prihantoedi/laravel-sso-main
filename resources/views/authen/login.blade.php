@@ -2,7 +2,7 @@
 @section('content')
     <div class="container login-box-wrapper mt-3 p-5">
         <div class="text-center">
-            <h2>Login Here</h2>
+            <h2>SSO Login Here</h2>
         </div>
 
         @if(Session::get('error'))

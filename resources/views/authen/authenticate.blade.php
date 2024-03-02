@@ -8,16 +8,16 @@
             <button class="btn btn-primary" id="auth-btn">Authentication</button>
             <script>
                 const token = {!! json_encode($auth_data)!!};
-                   
+                console.log(token);
                 // redirect to client app with url and access token and client
 
                 let authBtn = document.getElementById('auth-btn');
 
                 authBtn.addEventListener('click', function(){
-                    
+                    window.location.href = `http://127.0.0.1:8080/transit?acc=${token['access']}`;
                 });
 
-                window.location.href = `http://127.0.0.1:8080?acc=${token['access']}`;
+                // window.location.href = `http://127.0.0.1:8080?acc=${token['access']}`;
              
             </script>
             <button class="btn btn-danger" id="cancel-btn">Cancel</button>

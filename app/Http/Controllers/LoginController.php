@@ -26,15 +26,20 @@ class LoginController extends Controller
 
         if(count($url_exploder) > 1){
             $is_from_client = true;
-            $app_exploder = explode('=', $url_exploder);
-            if($app_exploder == 'first_app_client' || $app_exploder == 'second_app_client'){
+            $app_exploder = explode('=', $url_exploder[1]);
+            if($app_exploder[1] == 'first_app_client' || $app_exploder[1] == 'second_app_client'){
                 $client = $app_exploder[1];
             }
         }
 
 
-        if($request->session()->get('token_data')){
+        if(null != $request->session()->get('token_data') && $client == ''){
+            
             return redirect()->back();
+        }
+
+        if($client != '' && null != $request->session()->get('token_data')){
+            return redirect()->route('sso.authentication', ['client' => $client]);
         }
 
         $old_input = session()->getOldInput();
@@ -51,6 +56,7 @@ class LoginController extends Controller
             
             // $token_matcher = DB::table('sessions')->select('token_access', 'token_refresh', 'token_csrf')->where('token_access', $token_access)->first();
             $token_matcher = $token;
+
 
             if($token_matcher){
                 $secret = new Secret();
