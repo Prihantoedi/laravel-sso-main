@@ -124,4 +124,5 @@ class LoginValidationController extends Controller
             'status' => 200
         ]);
     }
+
 }

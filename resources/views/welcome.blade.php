@@ -39,6 +39,7 @@
 
     dum2ndAppBtn.addEventListener("click", function(event){
         event.preventDefault();
+        window.location.href = 'http://127.0.0.1:8080';
         
     });
 

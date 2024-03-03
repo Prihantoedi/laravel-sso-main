@@ -204,7 +204,6 @@ class LoginController extends Controller
             return redirect()->to($destination)->send();
         } 
 
-        // return redirect()->route('login');
         $destination = 'http:127.0.0.1:/8000/login?app='.$client;
         return redirect()->to($destination)->send();
     }
