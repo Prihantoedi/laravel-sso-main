@@ -93,6 +93,7 @@ class LoginValidationController extends Controller
 
                 $token_data = [
                     'access' => $token_access_encrypt,
+                    'client' => $client_app,
                     'type' => 'Bearer'
                 ];
 

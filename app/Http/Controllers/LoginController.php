@@ -176,8 +176,35 @@ class LoginController extends Controller
             // return response()->json(['message' => 'user not found!', 'status' => 404], 404);
             return redirect()->back()->with(['error' => 'User not found!']);
         }
-        
+    }
 
+    public function loginRedirectToClient(Request $request, $token, $client){
+        
+        $secret = new Secret();
+
+        $token_decrypted = $secret->token_decryption($token, $client);
+        $token_matcher = DB::table('sessions')->where('token_access', $token_decrypted)->first();
+
+        if($token_matcher){
+        
+            $token_data = [
+                'token_access' => $token_matcher->token_access,
+                'token_refresh' => $token_matcher->token_refresh,
+                'token_csrf' => $token_matcher->token_csrf,          
+                'expires' => $token_matcher->expires_at          
+            ];
+
+            // save to laravel session
+            $request->session()->put('token_data', $token_data);
+
+            $port = $secret->client_port[$client];
+
+            $destination = 'http://127.0.0.1:'.$port.'/transit?acc='.$token;
+            
+            return redirect()->to($destination)->send();
+        } 
+
+        return redirect()->route('login');
     }
 
     public function logout(Request $request){
@@ -190,6 +217,7 @@ class LoginController extends Controller
 
         return redirect()->route('welcome.page');
     }
+
 
 
 }

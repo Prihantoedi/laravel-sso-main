@@ -56,13 +56,13 @@
                         if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200){
                             const res = JSON.parse(xhr.responseText);
                             if(res.message === 'login success'){
-                                // console.log(res.data);
+                                console.log(res.data);
                                 let destination = '';
                                 if(client_app === 'first_client_app'){
-                                    destination = `http://127.0.0.1:8080/transit?acc=${res.data.access}`;
-                                    
+                                    // destination = `http://127.0.0.1:8080/transit?acc=${res.data.access}`;
+                                    destination = `http://127.0.0.1:8000/redirect/${res.data.access}/${res.data.client}`;
                                 }   
-                                // console.log(destination);
+                        
                                 window.location.href = destination;
                             }
                         }
@@ -70,10 +70,6 @@
 
                     xhr.send(formData);
 
-
-
-
-                    
                 });
             </script>
         @else
