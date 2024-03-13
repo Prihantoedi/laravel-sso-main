@@ -50,6 +50,7 @@ class LoginController extends Controller
     public function authentication(Request $request, $client){
         try{
             
+            
             $token = $request->session()->get('token_data');
 
             $token_access = $token['token_access'];

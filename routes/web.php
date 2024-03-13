@@ -21,5 +21,4 @@ Route::post('/login', [LoginController::class, 'loginAttempt'])->name('login.att
 Route::get('/redirect/{token}/{client}', [LoginController::class, 'loginRedirectToClient']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
 Route::get('/authentication/{client}', [LoginController::class, 'authentication'])->name('sso.authentication');
